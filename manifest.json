@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "YouTube Markup",
+  "version": "1.0.0",
+  "permissions": [
+    "identity",
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "*://*.youtube.com/watch?v=*",
+    "declarativeContent",
+    "contextMenus"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/watch?v=*"],
+      "js": ["js/content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

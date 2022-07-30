@@ -11,17 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const svg =
     '<svg height="100%" viewBox="0 0 24 24" width="75%"><use class="ytp-svg-shadow" href="#ytp-id-8688"></use><path fill="#fff" fill-rule="evenodd" id="ytp-id-8688" d="M17,18V5H7V18L12,15.82L17,18M17,3A2,2 0 0,1 19,5V21L12,18L5,21V5C5,3.89 5.9,3 7,3H17M11,7H13V9H15V11H13V13H11V11H9V9H11V7Z" /></svg>';
-  const styles = {
-    input: {
-      display: "block",
-      position: "absolute",
-      width: "200px",
-      bottom: "70px",
-      border: "none",
-      height: "40px",
-      paddingLeft: "10px",
-    }
-  };
   //right controls button.
   const button = document.createElement("button");
   button.classList.add("ytp-button");
@@ -39,14 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
   wrapper.style.position = "absolute";
 
   const input = document.createElement("input");
-  for (let style in styles.input) {
-    input.style[style] = styles.input[style];
-  }
   input.type = "text";
   input.classList.add("ytp-markup-input");
   input.setAttribute("placeholder", "Add Context");
   input.setAttribute("aria-label", "Add Context");
   input.setAttribute("title", "Add Context");
+  input.id = "markup_input";
   input.addEventListener("keyup", function (e) {
     if (e.keyCode === 27) {
       input.value = "";
@@ -95,23 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         wrapper.classList.add("hidden");
       }
     }
-
-    /*
-    let videoStatus = video.paused;
-    if (
-      e.target.classList.contains("ytp-markup-button") &&
-    ) {
-      input.focus();
-      video.pause();
-    } else {
-      if (
-        !e.target.classList.contains("ytp-markup-input") &&
-        input.style.display === "block"
-      ) {
-        input.style.display = "none";
-        videoState(videoStatus);
-      }
-    }*/
   });
 });
 

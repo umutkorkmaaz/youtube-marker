@@ -191,6 +191,7 @@ function getDuration() {
 }
 
 function fancyTimeFormat(duration) {
+  //https://stackoverflow.com/a/11486026/9070012
   // Hours, minutes and seconds
   var hrs = ~~(duration / 3600);
   var mins = ~~((duration % 3600) / 60);

@@ -2,7 +2,6 @@ let videoID = new URL(window.location.href).searchParams.get("v");
 let oldVideoID = videoID;
 
 (() => {
-  const rightControls = document.querySelector(".ytp-right-controls");
   let player, videoStatus;
   let videoMarkups = [];
 
@@ -38,45 +37,49 @@ let oldVideoID = videoID;
     }
   };
 
-  document.addEventListener("click", goMarkup);
-  document.addEventListener("click", buttonHandler);
-
   const start = () => {
-    if (!document.querySelector("#markup_button")) {
-      const markupButton = createPlayerButton();
-      rightControls.prepend(markupButton);
-    }
-    if (!document.querySelector("#markup_input")) {
-      const contextInput = createContextInput();
-      document.body.append(contextInput);
-    }
+    if (videoID !== null) {
+      document.addEventListener("click", goMarkup);
+      document.addEventListener("click", buttonHandler);
 
-    player = document.querySelector("video");
-    fetchMarkups(videoID).then((markups) => {
-      videoMarkups = markups;
-      const callback = function (mutationsList, observer) {
-        for (let mutation of mutationsList) {
-          if (mutation.type === "childList") {
-            
-            if(videoID !== oldVideoID){
-              document.querySelector('.markup-panel').remove();
+      const rightControls = document.querySelector(".ytp-right-controls");
+      if (!document.querySelector("#markup_button")) {
+        const markupButton = createPlayerButton();
+        rightControls.prepend(markupButton);
+      }
+      if (!document.querySelector("#markup_input")) {
+        const contextInput = createContextInput();
+        document.body.append(contextInput);
+      }
+
+      player = document.querySelector("video");
+
+      fetchMarkups(videoID).then((markups) => {
+        videoMarkups = markups;
+        const callback = function (mutationsList, observer) {
+          for (let mutation of mutationsList) {
+            if (mutation.type === "childList") {
+              if (videoID !== oldVideoID && oldVideoID !== null) {
+                document.querySelector(".markup-panel").remove();
+              }
               oldVideoID = videoID;
-            }
-            
-            if (document.querySelector("#secondary")) {
-              if (!document.querySelector(".markup-panel")) {
-                const panel = markupPanel(videoMarkups);
-                document.querySelector("#secondary").prepend(panel);
+              if (document.querySelector("#columns #secondary")) {
+                if (!document.querySelector(".markup-panel")) {
+                  const panel = markupPanel(videoMarkups);
+                  document.querySelector("#columns #secondary").prepend(panel);
+                }
               }
             }
           }
-        }
-      };
-      const observer = new MutationObserver(callback);
-      observer.observe(targetNode, config);
-    });
+        };
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+      });
+    }
   };
 
+  const targetNode = document.body;
+  const config = { childList: true, subtree: true };
   chrome.runtime.onMessage.addListener((obj, sender, response) => {
     const { type, value, videoId } = obj;
     if (type === "NEW") {
@@ -87,9 +90,6 @@ let oldVideoID = videoID;
 
   start();
 })();
-
-const targetNode = document.body;
-const config = { childList: true, subtree: true };
 
 function markupPanel(items) {
   let panel = document.createElement("div");

@@ -13,7 +13,7 @@ A little tool that allows you to add a markup to certain parts of the video you 
 
 ### Features
 
-- Adding multiple markers at the same time.
+- Adding multiple markers for the same time.
 - Explanation field about what the mark is about.
 - Skip to the relevant time by selecting from the list.
 - Browser synchronization supported.

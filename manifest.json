@@ -1,22 +1,25 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "YouTube Markup",
   "version": "1.0.0",
-  "permissions": [
-    "identity",
-    "storage",
-    "tabs",
-    "unlimitedStorage",
-    "*://*.youtube.com/watch?v=*",
-    "declarativeContent",
-    "contextMenus"
-  ],
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://*.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/watch?v=*"],
-      "js": ["./js/content.js"],
+      "js": ["./contentScript.js"],
       "css": ["./css/all.css"],
-      "run_at": "document_start"
+      "matches": ["https://*.youtube.com/*"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "bookmark.svg"
+      ],
+      "matches": ["https://*.youtube.com/*"]
     }
   ]
 }

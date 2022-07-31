@@ -4,7 +4,7 @@ A little tool that allows you to add a markup to certain parts of the video you 
 
 **Not yet published.**
 ### ToDo
-- List of video-related markups.
+- Actions button for listed markups.
 - Improving the appearance of input.
 
 

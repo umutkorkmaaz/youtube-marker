@@ -1,3 +1,4 @@
+//https://github.com/raman-at-pieces/youtube-bookmarker-finished-code/blob/master/background.js
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
     if (tab.url && tab.url.includes("youtube.com/watch")) {
       const queryParameters = tab.url.split("?")[1];

@@ -1,6 +1,9 @@
 
 # YouTube Marker
-A little tool that allows you to add a markup to certain parts of the video you are watching.
+You can use this tool to mark the parts of videos you watch on YouTube that are important to you.
+
+For example, you can mark the minute in an educational video when something you are interested in occurs, so you can quickly find what you are looking for the next time you watch the same educational video.
+
 ![image](https://user-images.githubusercontent.com/26327664/219871856-1727be3f-cc94-42fa-bfaa-c6a83b4bf8a0.png)
 
 

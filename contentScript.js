@@ -1,6 +1,13 @@
 let videoID = new URL(window.location.href).searchParams.get("v");
 let oldVideoID = videoID;
 
+const goMarkup = (time) => {
+  let player =  document.querySelector("video");
+  player.currentTime = time;
+  player.play();
+  
+};
+
 (() => {
   let player;
   let videoMarkups = [];
@@ -32,17 +39,11 @@ let oldVideoID = videoID;
     }
   };
 
-  const goMarkup = (e) => {
-    if (e.target.classList.contains("markup-row")) {
-      let time = e.target.getAttribute("data-time");
-      player.currentTime = time;
-      player.play();
-    }
-  };
+
 
   const start = () => {
     if (videoID !== null) {
-      document.addEventListener("click", goMarkup);
+      //document.addEventListener("click",".markup-row", goMarkup);
       document.addEventListener("click", buttonHandler);
 
       const rightControls = document.querySelector(".ytp-right-controls");
@@ -125,7 +126,11 @@ function createMarkupRow(markup, index) {
     formatted = markup.formatted;
   let row = document.createElement("div");
   row.classList.add("markup-row");
-  row.setAttribute("data-time", time);
+  
+  row.onclick = () => {
+    goMarkup(time)
+  };
+  
   row.innerHTML = `
   <div class="markup-context">${context}</div>
   <div style="display: flex; flex: 1;"><div class="markup-formatted"  id="${index}">${formatted}</div></div>

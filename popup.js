@@ -33,13 +33,16 @@ function addVideo(item){
     link.setAttribute("data-url",`https://www.youtube.com/watch?v=${item.id}`);
     link.innerHTML = `<span class="video-title">${item.title}</span> <span class="markup-count">${item.count}</span>`;
     markupItem.appendChild(link);
-    link.addEventListener("click", open)
+    link.onclick = () => {
+      open(`https://www.youtube.com/watch?v=${item.id}`)
+    }
 
     list.appendChild(markupItem);
 }
-function open(e){
-    let url = e.target.getAttribute("data-url");
+function open(url){
+    //let url = e.target.getAttribute("data-url");
     getCurrentTab().then((tab) => {
+      console.log(tab);
         chrome.tabs.update(tab.id, { url: url });
     });
 }

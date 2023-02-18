@@ -6,13 +6,9 @@ let oldVideoID = videoID;
   let videoMarkups = [];
 
   const buttonHandler = (e) => {
-    
     let wrapper = document.querySelector(".ytp-markup-wrapper");
 
-    if (
-      e.target.classList.contains("ytp-markup-button") &&
-      wrapper.classList.contains("hidden")
-    ) {
+    if (e.target.classList.contains("ytp-markup-button") && wrapper.classList.contains("hidden")) {
       //stop video
       player.pause();
       //Generate overlay for dialog
@@ -21,20 +17,11 @@ let oldVideoID = videoID;
       //Remove hidden class from wrapper
       wrapper.classList.remove("hidden");
       document.getElementsByClassName("ytp-markup-dialog-desc")[0].innerHTML = `Markup will be added at <span class="timestamp">${getDuration().formatted}</span>`;
-      document.getElementById('markup_input').focus();
+      document.getElementById("markup_input").focus();
     } else {
-      if (
-        !wrapper.classList.contains("hidden") &&
-        !e.target.classList.contains("ytp-markup-input") &&
-        !e.target.classList.contains("ytp-markup-dialog-desc") &&
-        !e.target.classList.contains("ytp-markup-dialog-title") &&
-        !e.target.classList.contains("ytp-markup-dialog-button-container") &&
-        !e.target.classList.contains("timestamp") &&
-        e.target.id !== "save_markup" &&
-        !e.target.classList.contains("ytp-markup-wrapper")
-      ) {
-        if(e.target.id === "cancel_markup"){
-            document.getElementById("markup_input").value = "";
+      if (!wrapper.classList.contains("hidden") && !e.target.classList.contains("ytp-markup-input") && !e.target.classList.contains("ytp-markup-dialog-desc") && !e.target.classList.contains("ytp-markup-dialog-title") && !e.target.classList.contains("ytp-markup-dialog-button-container") && !e.target.classList.contains("timestamp") && e.target.id !== "save_markup" && !e.target.classList.contains("ytp-markup-wrapper")) {
+        if (e.target.id === "cancel_markup") {
+          document.getElementById("markup_input").value = "";
         }
         //remove overlay
         document.getElementsByTagName("tp-yt-iron-overlay-backdrop")[0].remove();
@@ -111,12 +98,18 @@ function markupPanel(items) {
   let panel = document.createElement("div");
   panel.classList.add("markup-panel");
   panel.id = "markup-panel";
-  panel.innerHTML = `<div class="markup-panel-title"><p>Markups</p></div>`;
+  panel.innerHTML = `
+    <div class="markup-header">
+      <span>Markups</span>
+      <div style="height: 40px"></div>
+    </div>        
+  `;
+  /* panel.innerHTML = `<div class="markup-panel-title"><p>Markups</p></div>`; */
 
   const rowList = document.createElement("div");
   rowList.id = "markup-row-list";
   if (items.length === 0) {
-    rowList.innerHTML = `<i>There is no markup for this video.</i>`;
+    rowList.innerHTML = `<div class="markup-row"><i>There is no markup for this video.</i></div>`;
   }
   items.forEach((item, index) => {
     rowList.appendChild(createMarkupRow(item, index));
@@ -133,7 +126,10 @@ function createMarkupRow(markup, index) {
   let row = document.createElement("div");
   row.classList.add("markup-row");
   row.setAttribute("data-time", time);
-  row.innerHTML = `<div class="markup-context">${context}</div><div class="markup-formatted"  id="${index}">${formatted}</div>`;
+  row.innerHTML = `
+  <div class="markup-context">${context}</div>
+  <div style="display: flex; flex: 1;"><div class="markup-formatted"  id="${index}">${formatted}</div></div>
+  <div class="markup-remove"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope tp-yt-iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope tp-yt-iron-icon"><path d="M11,17H9V8h2V17z M15,8h-2v9h2V8z M19,4v1h-1v16H6V5H5V4h4V3h6v1H19z M17,5H7v15h10V5z" class="style-scope tp-yt-iron-icon"></path></g></svg> </div>`;
   return row;
 }
 
@@ -183,8 +179,8 @@ function createContextModal() {
   input.setAttribute("aria-label", "Markup description");
   input.setAttribute("title", "Markup description");
   input.setAttribute("autocomplete", "off");
-  input.setAttribute("autocorrect","off");
-  input.setAttribute("spellcheck","false")
+  input.setAttribute("autocorrect", "off");
+  input.setAttribute("spellcheck", "false");
   input.id = "markup_input";
   const inputHandler = function (e) {
     if (e.keyCode === 27) {
@@ -198,20 +194,19 @@ function createContextModal() {
   input.addEventListener("keyup", inputHandler);
   wrapper.appendChild(input);
 
-
   //Button container
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("ytp-markup-dialog-button-container");
   //Cancel Button
   const cancelButton = document.createElement("button");
-  cancelButton.setAttribute("type","button");
+  cancelButton.setAttribute("type", "button");
   cancelButton.id = "cancel_markup";
   cancelButton.innerHTML = "Cancel";
   buttonContainer.appendChild(cancelButton);
 
   //Save button
   const saveButton = document.createElement("button");
-  saveButton.setAttribute("type","button");
+  saveButton.setAttribute("type", "button");
   saveButton.id = "save_markup";
   saveButton.innerHTML = "Save";
   saveButton.addEventListener("click", saveHandler);
@@ -258,9 +253,7 @@ function addMarkup(id, newMarkup) {
     if (document.querySelector("#markup-row-list i")) {
       document.querySelector("#markup-row-list i").remove();
     }
-    document
-      .getElementById("markup-row-list")
-      .appendChild(createMarkupRow({ ...newMarkup }, markupList.length - 1));
+    document.getElementById("markup-row-list").appendChild(createMarkupRow({ ...newMarkup }, markupList.length - 1));
   });
 }
 
@@ -276,16 +269,15 @@ function fetchMarkups(id) {
   });
 }
 
-function generateOverlay(){
+function generateOverlay() {
   let overlay = document.createElement("tp-yt-iron-overlay-backdrop");
-  overlay.classList.add('opened');
-  overlay.setAttribute('opened',true);
+  overlay.classList.add("opened");
+  overlay.setAttribute("opened", true);
   overlay.style.zIndex = "2201";
   return overlay;
 }
 
-function saveHandler(){
-
+function saveHandler() {
   const { time, formatted } = getDuration();
   const input = document.getElementById("markup_input");
   const wrapper = document.getElementsByClassName("ytp-markup-wrapper")[0];

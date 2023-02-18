@@ -1,7 +1,7 @@
 
 # YouTube Marker
 A little tool that allows you to add a markup to certain parts of the video you are watching.
-![image](https://user-images.githubusercontent.com/26327664/219871842-bf514e37-b0ae-4b6e-a021-ed5f1e40dfd0.png)
+![image](https://user-images.githubusercontent.com/26327664/219871856-1727be3f-cc94-42fa-bfaa-c6a83b4bf8a0.png)
 
 
 **Published on Chrome Web Store as [YouTube Markup](https://chrome.google.com/webstore/detail/youtube-markup/emhjhcepnjieabmcmioendnlpbbhlnbn)**

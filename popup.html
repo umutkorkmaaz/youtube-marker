@@ -9,6 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <title>YouTube Markup</title>
     <style>
+        body::-webkit-scrollbar{
+            width: 12px;
+        }
+        body::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            background-color: #424242;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            border-radius: 8px;
+            background-color: #868686;
+        }
+
+        body::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: #0a0505;
+            margin-top: 3px;
+        }
         *{
             font-family: 'Roboto', sans-serif;
         }
@@ -16,7 +33,7 @@
             background-color:#0f0f0f;
         }
         #videolist{
-            width:300px;
+            width:400px;
             min-height:200px;
             height:auto;
         }
@@ -34,6 +51,15 @@
             padding: 15px;
             cursor:pointer;
         }
+        .video-title{
+            flex-basis: 65%;
+            font-size: 14px;
+        }
+        .video-thumbnail{
+            width:25%;
+            flex-basis:25%;
+        }
+
 
     </style>
 </head>

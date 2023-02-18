@@ -20,7 +20,7 @@ function addVideo(item){
   let link = document.createElement('div');
   link.classList.add("video-link");
   link.setAttribute("data-url",`https://www.youtube.com/watch?v=${item.id}`);
-  link.innerHTML = `<span class="video-title">${item.title}</span> <span class="markup-count">${item.count}</span>`;
+  link.innerHTML = `<img src="https://i.ytimg.com/vi/${item.id}/hq720.jpg" class="video-thumbnail"><span class="video-title">${item.title}</span> <span class="markup-count">${item.count}</span>`;
   markupItem.appendChild(link);
   link.onclick = () => {
     open(`https://www.youtube.com/watch?v=${item.id}`)

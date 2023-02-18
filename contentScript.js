@@ -251,10 +251,10 @@ function fancyTimeFormat(duration) {
 }
 
 function addMarkup(id, newMarkup) {
-  chrome.storage.local.get({ [id]: [] }, function (result) {
+  chrome.storage.sync.get({ [id]: [] }, function (result) {
     let markupList = result[id];
     markupList.push(newMarkup);
-    chrome.storage.local.set({ [id]: markupList });
+    chrome.storage.sync.set({ [id]: markupList });
     if (document.querySelector("#markup-row-list i")) {
       document.querySelector("#markup-row-list i").remove();
     }
@@ -266,7 +266,7 @@ function addMarkup(id, newMarkup) {
 
 function fetchMarkups(id) {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get({ [id]: [] }, function (result) {
+    chrome.storage.sync.get({ [id]: [] }, function (result) {
       if (chrome.runtime.lastError) {
         return reject(chrome.runtime.lastError);
       }

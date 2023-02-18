@@ -1,11 +1,23 @@
 #markup_input {
   display: block;
-  position: absolute;
-  width: 200px;
   border: none;
-  height: 40px;
+  height: 35px;
+  width: 80%;
+  border-bottom: 1px solid var(--ytd-searchbox-border-color);
+  background-color: var(--ytd-searchbox-background);
+  color: var(--ytd-searchbox-text-color);
+  margin-top: 10px;
+  margin-left: var(--ytd-margin-6x);
   padding-left: 10px;
-  bottom: 70px;
+  font-family: "Roboto","Arial",sans-serif;
+  border: 1px solid var(--ytd-searchbox-border-color);
+  border-radius: 18px;
+  line-height: 36px;
+}
+#markup_input:focus-visible{
+  outline: none;
+  border-color:var(--yt-spec-call-to-action);
+  transition:0.2s;
 }
 .markup-panel p{
   color: var(--yt-spec-text-primary);
@@ -55,4 +67,89 @@
   color: var(--yt-spec-text-primary);
   font-family: "Roboto","Arial",sans-serif;
   font-size: 1.4rem;
+}
+
+/*
+Markup Dialog
+*/
+.ytp-markup-wrapper{
+  background: var(--paper-dialog-background-color, var(--primary-background-color));
+  width: 450px;
+  height: 225px;
+  margin-top: -50px;
+  margin-left: -50px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  z-index: 2202;
+}
+.ytp-markup-dialog-title{
+  color: var(--yt-spec-text-primary);
+  margin-bottom: var(--ytd-margin-base);
+  padding: 0 var(--ytd-margin-6x) 0 var(--ytd-margin-6x);
+  font-size: var(--ytd-subheadline-font-size);
+  font-weight: var(--ytd-subheadline-font-weight);
+  line-height: var(--ytd-subheadline-line-height);
+  letter-spacing: var(--ytd-subheadline-letter-spacing);
+  margin-top: 20px;
+}
+
+.ytp-markup-dialog-desc{
+  color: var(--yt-spec-text-secondary);
+  display: inline-block;
+  font-size: var(--ytd-mini-attribution-font-size);
+  font-weight: var(--ytd-mini-attribution-font-weight);
+  line-height: var(--ytd-mini-attribution-line-height);
+  padding: 0 var(--ytd-margin-6x) 0 var(--ytd-margin-6x);
+}
+.ytp-markup-dialog-button-container{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  height: auto;
+  gap: 8px;
+  right: 0px;
+  padding-right: 8px;
+}
+
+.ytp-markup-dialog-button-container button{
+  border-radius: 18px;
+  padding: 0 16px;
+  height: 36px;
+  border: 0px;
+  background-color: transparent;
+  font-size:14px;
+  font-family: "Roboto","Arial",sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 0;
+  text-transform: none;
+  line-height: 18px;
+
+}
+#cancel_markup{
+  color: var(--yt-spec-text-primary);
+}
+#save_markup{
+  color: var(--yt-spec-call-to-action);
+}
+
+#cancel_markup:hover{
+  background-color: rgba(255,255,255,.2);
+}
+#save_markup:hover{
+  background-color: rgba(62,166,255,.2);
+}
+
+.ytp-markup-dialog-desc .timestamp{
+  font-family: "Roboto","Arial",sans-serif;
+  font-weight: 500;
+  color:#fff;
 }

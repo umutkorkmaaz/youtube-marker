@@ -282,8 +282,10 @@ function saveHandler() {
   const input = document.getElementById("markup_input");
   const wrapper = document.getElementsByClassName("ytp-markup-wrapper")[0];
   let text = input.value;
+  const videoTitle = document.querySelector("#title > h1 > yt-formatted-string");
 
   let markup = {
+    title: videoTitle.innerHTML,
     context: text,
     formatted: formatted,
     time: time,

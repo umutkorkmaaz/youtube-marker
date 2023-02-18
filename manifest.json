@@ -2,10 +2,14 @@
   "manifest_version": 3,
   "name": "YouTube Markup",
   "version": "1.0.1",
-  "permissions": ["storage"],
+  "permissions": ["storage","tabs"],
   "host_permissions": ["https://*.youtube.com/*"],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "YouTube Markup",
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {

@@ -1,37 +1,39 @@
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener("DOMContentLoaded", function () {
   fetchMarkups().then((response) => {
-    for (const [key, value] of Object.entries(response)){
-      let markup = value.at(0);
-      addVideo({
+    for (const [key, value] of Object.entries(response)) {
+      if (value.length > 0) {
+        let markup = value.at(0);
+        addVideo({
           id: key,
           title: markup.title ?? "Unknown",
-          count: value.length
-      });
+          count: value.length,
+        });
+      }
     }
   });
-})
+});
 
-function addVideo(item){
+function addVideo(item) {
   const list = document.getElementById("videolist");
 
-  let markupItem = document.createElement('div');
+  let markupItem = document.createElement("div");
   markupItem.classList.add("markup-item");
 
-  let link = document.createElement('div');
+  let link = document.createElement("div");
   link.classList.add("video-link");
-  link.setAttribute("data-url",`https://www.youtube.com/watch?v=${item.id}`);
+  link.setAttribute("data-url", `https://www.youtube.com/watch?v=${item.id}`);
   link.innerHTML = `<img src="https://i.ytimg.com/vi/${item.id}/hq720.jpg" class="video-thumbnail"><span class="video-title">${item.title}</span> <span class="markup-count">${item.count}</span>`;
   markupItem.appendChild(link);
   link.onclick = () => {
-    open(`https://www.youtube.com/watch?v=${item.id}`)
-  }
+    open(`https://www.youtube.com/watch?v=${item.id}`);
+  };
 
   list.appendChild(markupItem);
 }
 
-function open(url){
+function open(url) {
   getCurrentTab().then((tab) => {
-      chrome.tabs.update(tab.id, { url: url });
+    chrome.tabs.update(tab.id, { url: url });
   });
 }
 

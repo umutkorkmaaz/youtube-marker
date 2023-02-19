@@ -1,37 +1,58 @@
 let videoID = new URL(window.location.href).searchParams.get("v");
 let oldVideoID = videoID;
-
-const goMarkup = (time) => {
-  let player =  document.querySelector("video");
-  player.currentTime = time;
-  player.play();
-  
+let player;
+const goMarkup = (time,e) => {
+  if(!e.target.classList.contains("markup-remove")){
+    let player = document.querySelector("video");
+    player.currentTime = time;
+    player.play();
+  }
 };
 
 (() => {
-  let player;
   let videoMarkups = [];
 
   const buttonHandler = (e) => {
     let wrapper = document.querySelector(".ytp-markup-wrapper");
 
-    if (e.target.classList.contains("ytp-markup-button") && wrapper.classList.contains("hidden")) {
+    if (
+      e.target.classList.contains("ytp-markup-button") &&
+      wrapper.classList.contains("hidden")
+    ) {
       //stop video
       player.pause();
+
       //Generate overlay for dialog
       let overlay = generateOverlay();
       document.body.appendChild(overlay);
+
       //Remove hidden class from wrapper
       wrapper.classList.remove("hidden");
-      document.getElementsByClassName("ytp-markup-dialog-desc")[0].innerHTML = `Markup will be added at <span class="timestamp">${getDuration().formatted}</span>`;
+      document.getElementsByClassName(
+        "ytp-markup-dialog-desc"
+      )[0].innerHTML = `Markup will be added at <span class="timestamp">${
+        getDuration().formatted
+      }</span>`;
       document.getElementById("markup_input").focus();
     } else {
-      if (!wrapper.classList.contains("hidden") && !e.target.classList.contains("ytp-markup-input") && !e.target.classList.contains("ytp-markup-dialog-desc") && !e.target.classList.contains("ytp-markup-dialog-title") && !e.target.classList.contains("ytp-markup-dialog-button-container") && !e.target.classList.contains("timestamp") && e.target.id !== "save_markup" && !e.target.classList.contains("ytp-markup-wrapper")) {
+      if (
+        !wrapper.classList.contains("hidden") &&
+        !e.target.classList.contains("ytp-markup-input") &&
+        !e.target.classList.contains("ytp-markup-dialog-desc") &&
+        !e.target.classList.contains("ytp-markup-dialog-title") &&
+        !e.target.classList.contains("ytp-markup-dialog-button-container") &&
+        !e.target.classList.contains("timestamp") &&
+        e.target.id !== "save_markup" &&
+        !e.target.classList.contains("ytp-markup-wrapper")
+      ) {
         if (e.target.id === "cancel_markup") {
           document.getElementById("markup_input").value = "";
         }
+
         //remove overlay
-        document.getElementsByTagName("tp-yt-iron-overlay-backdrop")[0].remove();
+        document
+          .getElementsByTagName("tp-yt-iron-overlay-backdrop")[0]
+          .remove();
         //hide wrapper
         wrapper.classList.add("hidden");
         player.play();
@@ -39,11 +60,8 @@ const goMarkup = (time) => {
     }
   };
 
-
-
   const start = () => {
     if (videoID !== null) {
-      //document.addEventListener("click",".markup-row", goMarkup);
       document.addEventListener("click", buttonHandler);
 
       const rightControls = document.querySelector(".ytp-right-controls");
@@ -106,7 +124,6 @@ function markupPanel(items) {
     </div>        
   `;
   /* panel.innerHTML = `<div class="markup-panel-title"><p>Markups</p></div>`; */
-
   const rowList = document.createElement("div");
   rowList.id = "markup-row-list";
   if (items.length === 0) {
@@ -120,21 +137,38 @@ function markupPanel(items) {
   return panel;
 }
 
+function clearMarkupPanel() {
+  if (document.querySelector("#markup-row-list")) {
+    document.querySelector("#markup-row-list").innerHTML = "";
+  }
+}
+
 function createMarkupRow(markup, index) {
   let context = markup.context,
     time = markup.time,
     formatted = markup.formatted;
   let row = document.createElement("div");
   row.classList.add("markup-row");
-  
-  row.onclick = () => {
-    goMarkup(time)
+  row.id = `markup${index}`;
+  row.onclick = (event) => {
+    goMarkup(time,event);
   };
-  
+
   row.innerHTML = `
   <div class="markup-context">${context}</div>
-  <div style="display: flex; flex: 1;"><div class="markup-formatted"  id="${index}">${formatted}</div></div>
-  <div class="markup-remove"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope tp-yt-iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope tp-yt-iron-icon"><path d="M11,17H9V8h2V17z M15,8h-2v9h2V8z M19,4v1h-1v16H6V5H5V4h4V3h6v1H19z M17,5H7v15h10V5z" class="style-scope tp-yt-iron-icon"></path></g></svg> </div>`;
+  <div style="display: flex; flex: 1;"><div class="markup-formatted" >${formatted}</div></div>`;
+
+  const removeButton = document.createElement("div");
+  removeButton.classList.add("markup-remove");
+  removeButton.innerHTML =
+    '<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope tp-yt-iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope tp-yt-iron-icon"><path d="M11,17H9V8h2V17z M15,8h-2v9h2V8z M19,4v1h-1v16H6V5H5V4h4V3h6v1H19z M17,5H7v15h10V5z" class="style-scope tp-yt-iron-icon"></path></g></svg>';
+
+  removeButton.onclick = () => {
+    deleteMarkup(time);
+  };
+
+  row.appendChild(removeButton);
+
   return row;
 }
 
@@ -158,12 +192,10 @@ function createPlayerButton() {
   return button;
 }
 function createContextModal() {
-  //@todo: Burası düzenlenecek. Buton ve açıklama alanları eklenecek.
   //context entry area.
   const wrapper = document.createElement("div");
   wrapper.classList.add("ytp-markup-wrapper");
   wrapper.classList.add("hidden");
-  wrapper.style.position = "absolute";
 
   //add title
   const dialogTitle = document.createElement("p");
@@ -250,15 +282,36 @@ function fancyTimeFormat(duration) {
   return ret;
 }
 
+function deleteMarkup(time) {
+  chrome.storage.sync.get({ [videoID]: [] }, function (result) {
+    for (const [key, value] of Object.entries(result)) {
+      value.forEach((item, index) => {
+        if (time === item.time) {
+          value.splice(index,1);
+          document.getElementById(`markup${index}`).remove();
+          result[videoID] = value;
+          if(result[videoID].length === 0){
+            document.getElementById('markup-row-list').innerHTML = '<div class="markup-row"><i>There is no markup for this video.</i></div>';
+          }
+        }
+      });
+    }
+    chrome.storage.sync.set({ [videoID]: result[videoID] });
+  });
+}
+
 function addMarkup(id, newMarkup) {
+  let firstRow = document.querySelector('.markup-row');
+  if(!firstRow.hasAttribute('id')){
+    firstRow.remove();
+  }
   chrome.storage.sync.get({ [id]: [] }, function (result) {
     let markupList = result[id];
     markupList.push(newMarkup);
     chrome.storage.sync.set({ [id]: markupList });
-    if (document.querySelector("#markup-row-list i")) {
-      document.querySelector("#markup-row-list i").remove();
-    }
-    document.getElementById("markup-row-list").appendChild(createMarkupRow({ ...newMarkup }, markupList.length - 1));
+    document
+      .getElementById("markup-row-list")
+      .appendChild(createMarkupRow({ ...newMarkup }, markupList.length - 1));
   });
 }
 
@@ -287,7 +340,9 @@ function saveHandler() {
   const input = document.getElementById("markup_input");
   const wrapper = document.getElementsByClassName("ytp-markup-wrapper")[0];
   let text = input.value;
-  const videoTitle = document.querySelector("#title > h1 > yt-formatted-string");
+  const videoTitle = document.querySelector(
+    "#title > h1 > yt-formatted-string"
+  );
 
   let markup = {
     title: videoTitle.innerHTML,

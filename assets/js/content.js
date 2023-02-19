@@ -173,7 +173,6 @@ function createMarkupRow(markup, index) {
 }
 
 function createPlayerButton() {
-  const svg = chrome.runtime.getURL("./bookmark.svg");
   const button = document.createElement("button");
 
   button.classList.add("ytp-button");
@@ -182,12 +181,8 @@ function createPlayerButton() {
   button.setAttribute("data-tooltip-target-id", "ytp-markup-button");
   button.setAttribute("aria-label", "Markup");
   button.setAttribute("title", "Markup");
+  button.innerHTML = `<svg height="100%" viewBox="0 0 24 24" width="75%"><use class="ytp-svg-shadow" href="#ytp-id-8688"></use><path fill="#fff" fill-rule="evenodd" id="ytp-id-8688" d="M17,18V5H7V18L12,15.82L17,18M17,3A2,2 0 0,1 19,5V21L12,18L5,21V5C5,3.89 5.9,3 7,3H17M11,7H13V9H15V11H13V13H11V11H9V9H11V7Z" /></svg>`;
 
-  fetch(svg).then((response) => {
-    response.text().then((text) => {
-      button.innerHTML = text;
-    });
-  });
 
   return button;
 }

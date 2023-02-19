@@ -5,7 +5,7 @@
   "permissions": ["storage","tabs"],
   "host_permissions": ["https://*.youtube.com/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "./assets/js/background.js"
   },
   "action": {
     "default_title": "YouTube Markup",
@@ -13,8 +13,8 @@
   },
   "content_scripts": [
     {
-      "js": ["./contentScript.js"],
-      "css": ["./css/all.css"],
+      "js": ["./assets/js/content.js"],
+      "css": ["./assets/css/all.css"],
       "matches": ["https://*.youtube.com/*"]
     }
   ],
